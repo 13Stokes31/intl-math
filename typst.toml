@@ -1,0 +1,10 @@
+[package]
+name = "intl-math"
+version = "0.1.0"
+entrypoint = "lib.typ"
+authors = ["Jesús Manuel González Meneses"]
+license = "MIT"
+description = "Operadores matemáticos que se imprimen en el idioma del documento: escribes sin(x) y sale sen(x) en español, sin(x) en inglés. Ampliable con cualquier idioma sin forkear."
+categories = ["utility"]
+keywords = ["math", "i18n", "l10n", "operators", "notation"]
+compiler = "0.14.0"
