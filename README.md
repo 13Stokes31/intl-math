@@ -107,6 +107,7 @@ matemáticas necesita:
 | `max` `min` `inf` | max, min, inf | **máx, mín, ínf** |
 | `gcd` `lcm` | gcd, lcm | **mcd, mcm** |
 | `rank` `adj` | rank, adj | **rang, Adj** |
+| `opp` | opp | **op** |
 | `dom` `proj` | dom, proj | **Dom, proy** |
 | `Pr` | Pr | **P** |
 | `mvt` | MVT | **TVM** |
@@ -114,6 +115,12 @@ matemáticas necesita:
 
 `pw-if` no es un operador: es la palabra de las funciones a trozos, y se imprime
 con un espacio a cada lado.
+
+`opp` es el opuesto (inverso aditivo): `opp(-17)` sale «op(−17)» en español. La
+clave se llama `opp` y no `op` a propósito: `op` es una función NATIVA de Typst
+(`math.op`), y un paquete que se la quita a quien lo instala es una trampa —
+además de una que falla callada, porque `$op(-17)$` seguiría compilando sin
+error, solo cambiando de significado.
 
 ```typst
 $f(x) = cases(x^2 & #m.pw-if x > 0, -x & #m.pw-if x <= 0)$

@@ -30,6 +30,11 @@
   det: "det", dim: "dim", rank: "rank", tr: "tr",
   gcd: "gcd", lcm: "lcm", mod: "mod",
   adj: "adj", ker: "ker", hom: "hom", arg: "arg", deg: "deg",
+  // Opuesto (inverso aditivo): opp(-17) = 17. La clave NO puede llamarse `op`
+  // aunque sea así como se abrevia en varios idiomas: `op` es una función nativa
+  // de Typst (`math.op`), y un paquete que se la quita a quien lo instala es una
+  // trampa. Con `opp` no hay colisión.
+  opp: "opp",
 
   // --- Análisis y geometría ---
   dom: "dom", id: "id", proj: "proj", dist: "dist", rad: "rad",

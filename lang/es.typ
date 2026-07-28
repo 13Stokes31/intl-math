@@ -36,6 +36,7 @@
   gcd: "mcd",              // máximo común divisor
   lcm: "mcm",              // mínimo común múltiplo
   adj: "Adj",              // matriz adjunta (con mayúscula, como es habitual)
+  opp: "op",               // opuesto de un número: op(−17) = 17
 
   // --- Análisis ---
   dom: "Dom",              // dominio, con mayúscula en la convención española
