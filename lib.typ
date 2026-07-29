@@ -42,16 +42,38 @@
   pw-if: "spaced",
 )
 
-// Resolución en UN solo `context`: dentro se puede leer `text.lang` y trabajar
-// con cadenas. Fuera, un `context` ya es contenido y no se concatena.
+// Operadores que llevan los LÍMITES debajo, no al lado: `lim_(x->0)` pone la
+// condición bajo la palabra, mientras que `log_a` la deja como subíndice. Es la
+// misma lista que trae Typst para sus operadores nativos, comprobada
+// compilándolos: el resto (log, sin, arg, dim…) NO lleva límites.
+#let _limits = ("lim", "liminf", "limsup", "max", "min", "sup", "inf", "det", "gcd", "Pr")
+
+// El `context` va DENTRO del `math.op`, y esto NO es un detalle de estilo.
 //
-// El respaldo es en cascada: idioma del documento → inglés → la clave tal cual.
-// Así una tabla incompleta NO rompe el documento (sale la palabra inglesa), y un
-// idioma desconocido tampoco (sale todo en inglés).
-#let _symbol(key, tables) = context {
-  let table = tables.at(text.lang, default: tables.en)
-  let word = table.at(key, default: tables.en.at(key, default: key))
-  if _shape.at(key, default: "op") == "op" { math.op(word) } else { math.text(" " + word + " ") }
+// Al revés —`context { math.op(word) }`— el resultado deja de ser un operador a
+// ojos de Typst: es contenido opaco. Y entonces se pierde el espaciado de
+// operador en cuanto lleva subíndice, que es justo cuando más se usa:
+// `log_a m` salía «log_a​m», pegado, y `lim_(x->0) f(x)` igual. Compila sin una
+// queja y solo se ve comparando. Apareció migrando 4º ESO, donde una fórmula de
+// logaritmos cabía en una línea con el motor nuevo y en dos con el anterior.
+//
+// Poniendo el `context` dentro, el nodo exterior SÍ es un `math.op` y conserva su
+// clase; lo único que se resuelve tarde es la palabra.
+#let _symbol(key, tables) = {
+  // El respaldo es en cascada: idioma del documento → inglés → la clave tal cual.
+  // Así una tabla incompleta NO rompe el documento (sale la palabra inglesa), y
+  // un idioma desconocido tampoco (sale todo en inglés).
+  let word = context {
+    let table = tables.at(text.lang, default: tables.en)
+    table.at(key, default: tables.en.at(key, default: key))
+  }
+  if _shape.at(key, default: "op") == "op" {
+    math.op(word, limits: _limits.contains(key))
+  } else {
+    // Los espacios van FUERA del `context`: dentro, `word` ya es contenido y no
+    // se puede concatenar con cadenas.
+    math.text(" ") + word + math.text(" ")
+  }
 }
 
 /// Los símbolos, resueltos según el idioma del documento.
