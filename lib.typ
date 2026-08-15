@@ -1,68 +1,69 @@
 // ============================================================================
-//  intl-math — operadores matemáticos que se imprimen en el idioma del
-//  documento.
+//  intl-math — math operators that print in the language of the document.
 //
-//  El problema: las abreviaturas matemáticas NO son universales. En español el
-//  seno es "sen", el límite "lím" y el máximo común divisor "mcd"; en inglés son
-//  "sin", "lim" y "gcd". Typst solo trae las inglesas, así que un documento en
-//  español sale con notación inglesa — o hay que redefinir los operadores a mano
-//  en cada proyecto.
+//  The problem: mathematical abbreviations are NOT universal. In Spanish, sine
+//  is "sen", limit is "lím" and the greatest common divisor is "mcd"; in English
+//  they are "sin", "lim" and "gcd". Typst ships only the English ones, so a
+//  Spanish document comes out in English notation — unless the operators get
+//  redefined by hand in every project.
 //
-//  La idea: el IDENTIFICADOR no cambia (sigues escribiendo `sin(x)`, el nombre
-//  que ya usas y que documenta Typst); lo que cambia es la palabra IMPRESA, que
-//  la decide `text.lang`. Adoptar el paquete no obliga a reescribir contenido.
+//  The idea: the IDENTIFIER does not change (you keep writing `sin(x)`, the name
+//  you already use and the one Typst documents); what changes is the PRINTED
+//  word, decided by `text.lang`. Adopting the package does not force anyone to
+//  rewrite content.
 //
 //      #import "@preview/intl-math:0.1.0": intl
 //      #let m = intl()
 //      #set text(lang: "es")
-//      $#m.sin (x)$   →  sen(x)
-//      $#m.lim_(x->0)$ →  lím
+//      $#m.sin (x)$    →  sen(x)
+//      $#(m.lim)_(x->0)$ →  lím
 //
-//  Y con el idioma en "en", los mismos identificadores imprimen sin y lim.
+//  With the language set to "en", the same identifiers print sin and lim.
 // ============================================================================
 
 #import "lang/en.typ" as en-lang
 #import "lang/es.typ" as es-lang
 
-// Los idiomas que trae el paquete. Añadir uno es añadir su fichero y una línea
-// AQUÍ — en ningún otro sitio: los símbolos se construyen solos a partir de las
-// claves del inglés (ver `intl` más abajo).
+// The languages that ship with the package. Adding one means adding its file
+// and one line HERE — nowhere else: the symbols build themselves out of the
+// English keys (see `intl` below).
 #let BUILTIN = (
   en: en-lang.words,
   es: es-lang.words,
 )
 
-// Qué FORMA tiene cada símbolo. No depende del idioma, así que vive aparte de
-// las tablas: quien añade un idioma no tiene que saber nada de esto.
-//   "op"     → operador matemático (math.op: se compone en redonda y con el
-//              espaciado de operador que le corresponde).
-//   "spaced" → palabra suelta dentro de una fórmula, con un espacio a cada lado
-//              (el "si" de las funciones a trozos).
+// What SHAPE each symbol has. It does not depend on the language, so it lives
+// apart from the tables: whoever adds a language needs to know nothing about it.
+//   "op"     → math operator (math.op: set upright, with the spacing an operator
+//              is entitled to).
+//   "spaced" → a plain word inside a formula, with a space on each side (the
+//              "if" of piecewise functions).
 #let _shape = (
   pw-if: "spaced",
 )
 
-// Operadores que llevan los LÍMITES debajo, no al lado: `lim_(x->0)` pone la
-// condición bajo la palabra, mientras que `log_a` la deja como subíndice. Es la
-// misma lista que trae Typst para sus operadores nativos, comprobada
-// compilándolos: el resto (log, sin, arg, dim…) NO lleva límites.
+// Operators whose condition goes UNDERNEATH rather than beside: `lim_(x->0)`
+// puts the condition below the word, while `log_a` keeps it as a subscript.
+// This is the same list Typst uses for its native operators, verified by
+// compiling them: the rest (log, sin, arg, dim…) does NOT take limits.
 #let _limits = ("lim", "liminf", "limsup", "max", "min", "sup", "inf", "det", "gcd", "Pr")
 
-// El `context` va DENTRO del `math.op`, y esto NO es un detalle de estilo.
+// The `context` goes INSIDE the `math.op`, and this is NOT a matter of style.
 //
-// Al revés —`context { math.op(word) }`— el resultado deja de ser un operador a
-// ojos de Typst: es contenido opaco. Y entonces se pierde el espaciado de
-// operador en cuanto lleva subíndice, que es justo cuando más se usa:
-// `log_a m` salía «log_a​m», pegado, y `lim_(x->0) f(x)` igual. Compila sin una
-// queja y solo se ve comparando. Apareció migrando 4º ESO, donde una fórmula de
-// logaritmos cabía en una línea con el motor nuevo y en dos con el anterior.
+// The other way round — `context { math.op(word) }` — the result stops being an
+// operator as far as Typst is concerned: it is opaque content. And then the
+// operator spacing is lost as soon as there is a subscript, which is exactly
+// when it is needed most: `log_a m` came out as "log_a​m", glued, and so did
+// `lim_(x->0) f(x)`. It compiles without a complaint and only shows up by
+// comparison. It surfaced while migrating a Year 10 course, where a logarithm
+// formula fitted on one line with the new engine and took two with the old one.
 //
-// Poniendo el `context` dentro, el nodo exterior SÍ es un `math.op` y conserva su
-// clase; lo único que se resuelve tarde es la palabra.
+// With the `context` inside, the outer node IS a `math.op` and keeps its class;
+// the only thing resolved late is the word itself.
 #let _symbol(key, tables) = {
-  // El respaldo es en cascada: idioma del documento → inglés → la clave tal cual.
-  // Así una tabla incompleta NO rompe el documento (sale la palabra inglesa), y
-  // un idioma desconocido tampoco (sale todo en inglés).
+  // The fallback is a cascade: document language → English → the key itself.
+  // So an incomplete table does NOT break the document (the English word comes
+  // out), and neither does an unknown language (everything comes out English).
   let word = context {
     let table = tables.at(text.lang, default: tables.en)
     table.at(key, default: tables.en.at(key, default: key))
@@ -70,31 +71,31 @@
   if _shape.at(key, default: "op") == "op" {
     math.op(word, limits: _limits.contains(key))
   } else {
-    // Los espacios van FUERA del `context`: dentro, `word` ya es contenido y no
-    // se puede concatenar con cadenas.
+    // The spaces go OUTSIDE the `context`: inside it, `word` is already content
+    // and cannot be concatenated with strings.
     math.text(" ") + word + math.text(" ")
   }
 }
 
-/// Los símbolos, resueltos según el idioma del documento.
+/// The symbols, resolved according to the language of the document.
 ///
-/// - extra (dictionary): idiomas ADICIONALES, `(código: (clave: "palabra"))`.
-///   Permite usar un idioma que el paquete no trae todavía **sin forkearlo**; si
-///   además quieres contribuirlo, es un fichero en `lang/`.
+/// - extra (dictionary): ADDITIONAL languages, `(code: (key: "word"))`. Lets you
+///   use a language the package does not ship yet **without forking it**; if you
+///   also want to contribute it, it is one file in `lang/`.
 ///
-/// Devuelve un diccionario con un símbolo por clave (ver `lang/en.typ` para la
-/// lista completa). Se usa con `#`, porque en modo math un identificador suelto
-/// se interpretaría como variables: `$#m.sin (x)$`.
+/// Returns a dictionary with one symbol per key (see `lang/en.typ` for the full
+/// list). Use it with `#`, because in math mode a bare identifier would be read
+/// as a product of variables: `$#m.sin (x)$`.
 #let intl(extra: (:)) = {
   let tables = BUILTIN + extra
   let out = (:)
-  // Las claves salen de la tabla inglesa, que es la de referencia: añadir un
-  // símbolo nuevo es añadirlo allí (y a `_shape` si no es un operador).
+  // The keys come from the English table, which is the reference one: adding a
+  // new symbol means adding it there (and to `_shape` if it is not an operator).
   for key in en-lang.words.keys() {
     out.insert(key, _symbol(key, tables))
   }
   out
 }
 
-/// Los códigos de idioma que trae el paquete, para saber si el tuyo está.
+/// The language codes that ship with the package, to check whether yours is in.
 #let languages() = BUILTIN.keys()

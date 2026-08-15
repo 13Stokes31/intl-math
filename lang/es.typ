@@ -1,29 +1,29 @@
 // ============================================================================
-//  es.typ — ESPAÑOL (convenciones de España, enseñanza secundaria).
+//  es.typ — SPANISH (conventions used in Spain, secondary education).
 //
-//  Solo lo que CAMBIA respecto al inglés. Lo que no está aquí se imprime igual
-//  que en inglés (cos, sec, log, ln, exp, det, dim, tr, mod, arg, Re, Im…), que
-//  es lo correcto: esas abreviaturas son las mismas en los dos idiomas.
+//  Only what CHANGES with respect to English. Anything not listed here prints
+//  the same as in English (cos, sec, log, ln, exp, det, dim, tr, mod, arg, Re,
+//  Im…), which is correct: those abbreviations are identical in both languages.
 // ============================================================================
 
 #let words = (
-  // --- Trigonometría ---
-  // Seno: "sen" es la forma española; "sin" es un anglicismo muy extendido.
+  // --- Trigonometry ---
+  // Sine: "sen" is the Spanish form; "sin" is a widespread anglicism.
   sin: "sen",
   arcsin: "arcsen",
   sinh: "senh",
-  // Tangente: "tg" es la forma tradicional en España (Typst ya trae `tg` como
-  // operador suelto, pero aquí lo que importa es que quien escribe `tan(x)`
-  // —el nombre que documenta Typst— vea "tg" impreso sin cambiar su contenido).
+  // Tangent: "tg" is the traditional form in Spain (Typst already ships `tg` as
+  // a standalone operator, but what matters here is that whoever writes `tan(x)`
+  // — the name Typst documents — sees "tg" printed without changing content).
   tan: "tg",
   arctan: "arctg",
   tanh: "tgh",
-  // Cotangente y cosecante: en español se escriben desarrolladas.
+  // Cotangent and cosecant are written out in Spanish.
   cot: "cotg",
   coth: "cotgh",
   csc: "cosec",
 
-  // --- Límites y extremos (llevan tilde) ---
+  // --- Limits and extrema (these carry an accent) ---
   lim: "lím",
   liminf: "lím inf",
   limsup: "lím sup",
@@ -31,23 +31,23 @@
   min: "mín",
   inf: "ínf",
 
-  // --- Álgebra y aritmética ---
-  rank: "rang",            // rango de una matriz
+  // --- Algebra and arithmetic ---
+  rank: "rang",            // rank of a matrix
   gcd: "mcd",              // máximo común divisor
   lcm: "mcm",              // mínimo común múltiplo
-  adj: "Adj",              // matriz adjunta (con mayúscula, como es habitual)
-  opp: "op",               // opuesto de un número: op(−17) = 17
+  adj: "Adj",              // adjugate matrix (capitalised, as is customary)
+  opp: "op",               // opposite of a number: op(−17) = 17
 
-  // --- Análisis ---
-  dom: "Dom",              // dominio, con mayúscula en la convención española
-  proj: "proy",            // proyección
+  // --- Analysis ---
+  dom: "Dom",              // domain, capitalised by Spanish convention
+  proj: "proy",            // projection
 
-  // --- Probabilidad ---
-  Pr: "P",                 // probabilidad: P(A), no Pr(A)
+  // --- Probability ---
+  Pr: "P",                 // probability: P(A), not Pr(A)
 
-  // --- Teoremas ---
-  mvt: "TVM",              // Teorema del Valor Medio
+  // --- Theorems ---
+  mvt: "TVM",              // Teorema del Valor Medio (mean value theorem)
 
-  // --- Palabras dentro de fórmulas ---
+  // --- Words inside formulas ---
   pw-if: "si",
 )
