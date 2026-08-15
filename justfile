@@ -7,6 +7,7 @@ local_pkg_dir := env_var('HOME') + "/.local/share/typst/packages/local"
 # Instalar como @local/intl-math:0.1.0 (tras editar lib.typ o lang/)
 install:
     rsync -a --delete --mkpath --exclude tests --exclude .git --exclude justfile \
+      --exclude ROADMAP.md --exclude TESTING.md \
       ./ {{local_pkg_dir}}/intl-math/0.1.0/
     @echo "  intl-math instalado en la caché local"
 
