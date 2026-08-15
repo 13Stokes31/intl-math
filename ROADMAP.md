@@ -38,10 +38,14 @@
 - [x] Translate the README to English. (2026-08-15)
 - [x] Confirm the name `intl-math` is free in the Typst package index.
   (2026-08-15, checked against `packages.typst.org/preview/index.json`)
-- [ ] Create the GitHub repository `13Stokes31/intl-math` (public) and push. The
-  URL currently 404s, so `repository` in the manifest points nowhere yet.
-- [ ] Manual pass on `TESTING.md`.
-- [ ] Tag `v0.1.0` — the Universe bot wants README links to be permalinks, not
-  `main`.
-- [ ] Submit a PR to `typst/packages` (`packages/preview/intl-math/0.1.0/`),
+- [x] The repository `13Stokes31/intl-math` existed but was **private**, so its
+  URL 404'd for anyone else. Made public 2026-08-15, description in English.
+- [x] Translate the code comments to English — a package whose selling point is
+  "contributing a language is one file and one line" cannot ship `lang/en.typ`
+  explained in Spanish. (2026-08-15)
+- [x] Tag `v0.1.0`. (2026-08-15)
+- [ ] Manual pass on `TESTING.md` by the author. The PDFs were rendered and read
+  through on 2026-08-15 and everything matched, but the author's own eyeball is
+  still pending; the PR can be updated if anything is off.
+- [x] Submit a PR to `typst/packages` (`packages/preview/intl-math/0.1.0/`),
   title `intl-math:0.1.0`.
