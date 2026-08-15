@@ -8,8 +8,8 @@ local_pkg_dir := env_var('HOME') + "/.local/share/typst/packages/local"
 # exclusions mirror the `exclude` in typst.toml, so the local copy is exactly
 # the bundle that gets published.
 install:
-    rsync -a --delete --mkpath --exclude tests --exclude .git --exclude justfile \
-      --exclude ROADMAP.md --exclude TESTING.md \
+    rsync -a --delete --delete-excluded --mkpath --exclude tests --exclude justfile \
+      --exclude ROADMAP.md --exclude TESTING.md --exclude '.*' \
       ./ {{local_pkg_dir}}/intl-math/0.1.0/
     @echo "  intl-math installed into the local package cache"
 
