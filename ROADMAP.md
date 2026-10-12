@@ -42,7 +42,7 @@
 
 - **0.1.0** — published on Typst Universe on 2026-08-17 (`@preview/intl-math:0.1.0`,
   [typst/packages#5587](https://github.com/typst/packages/pull/5587)).
-- **0.1.1** — fixed in the repository on 2026-10-12, **not yet published**. A
+- **0.1.1** — fixed and tagged on 2026-10-12, **submitted but not yet merged**. A
   published version is immutable, so the fixes below only reach users through a
   new PR to `typst/packages`.
   - [x] `extra` on a shipped language replaced its whole table instead of the
@@ -56,7 +56,8 @@
   - [x] `just test` no longer installs into the shared `@local` cache: the tests
     import `../lib.typ`. They now assert the fallback cascade, the overrides and
     parity with Typst's 39 native operators, instead of only compiling.
-  - [ ] Tag `v0.1.1` and submit the PR (`packages/preview/intl-math/0.1.1/`).
+  - [x] Tag `v0.1.1` and submit the PR: [typst/packages#6096](https://github.com/typst/packages/pull/6096),
+    all three checks green (2026-10-12). Waiting for the merge.
   - [ ] Bump the import in `examkit` (`lib/notation.typ`) once it is published.
     Until then CURSOS and Evaluxia keep running 0.1.0, which is fine: they call
     `intl()` with no `extra`.
