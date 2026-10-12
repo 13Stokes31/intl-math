@@ -20,7 +20,17 @@
   places (`tan` instead of `tg`, for one). That is what the override in `extra:`
   is for.
 
+- **Unknown keys in `extra` are ignored silently.** `(es: (gdc: "MCD"))` — a typo
+  for `gcd` — changes nothing and says nothing. Validating against the reference
+  table would catch it, at the price of an error for anyone carrying a key from a
+  newer version. Undecided.
+- **Some Spanish words are a judgement call**: `csch` prints "csch" while `csc`
+  prints "cosec" and `coth` "cotgh"; `deg` prints "deg" rather than "gr".
+  Undecided whether to change them.
+
 ## Possible improvements (optional)
+
+- **CI** that runs `just test` on the minimum compiler (0.14) and the current one.
 
 - **More shipped languages** — French, German and Portuguese are the obvious
   next ones, and each is a file plus a line in `BUILTIN`.
@@ -28,24 +38,26 @@
   binding `m` in every file. Not obviously possible without shadowing native
   names, which is exactly what this package refuses to do.
 
-## Before publishing to Typst Universe
+## Status
 
-- [x] Add a `LICENSE` file — the manifest declared MIT without shipping one,
-  which is an automatic rejection. (2026-08-15)
-- [x] `typst.toml`: add `repository` and `exclude`, and put the description in
-  English. Categories `languages`/`text`, disciplines `mathematics`/`education`.
-  (2026-08-15)
-- [x] Translate the README to English. (2026-08-15)
-- [x] Confirm the name `intl-math` is free in the Typst package index.
-  (2026-08-15, checked against `packages.typst.org/preview/index.json`)
-- [x] The repository `13Stokes31/intl-math` existed but was **private**, so its
-  URL 404'd for anyone else. Made public 2026-08-15, description in English.
-- [x] Translate the code comments to English — a package whose selling point is
-  "contributing a language is one file and one line" cannot ship `lang/en.typ`
-  explained in Spanish. (2026-08-15)
-- [x] Tag `v0.1.0`. (2026-08-15)
-- [ ] Manual pass on `TESTING.md` by the author. The PDFs were rendered and read
-  through on 2026-08-15 and everything matched, but the author's own eyeball is
-  still pending; the PR can be updated if anything is off.
-- [x] Submit a PR to `typst/packages` (`packages/preview/intl-math/0.1.0/`),
-  title `intl-math:0.1.0`.
+- **0.1.0** — published on Typst Universe on 2026-08-17 (`@preview/intl-math:0.1.0`,
+  [typst/packages#5587](https://github.com/typst/packages/pull/5587)).
+- **0.1.1** — fixed in the repository on 2026-10-12, **not yet published**. A
+  published version is immutable, so the fixes below only reach users through a
+  new PR to `typst/packages`.
+  - [x] `extra` on a shipped language replaced its whole table instead of the
+    listed keys: `intl(extra: (es: (tan: "tan")))` printed every other Spanish
+    word in English, and a partial override of `en` printed bare keys
+    (`liminf`, `mvt`, `pw-if`). The README promised the opposite. Now merged
+    language by language.
+  - [x] `lcm` takes its limits underneath, like Typst's native `lcm`.
+  - [x] `liminf` / `limsup` use a thin space, like Typst's own (they were 1.45pt
+    wider).
+  - [x] `just test` no longer installs into the shared `@local` cache: the tests
+    import `../lib.typ`. They now assert the fallback cascade, the overrides and
+    parity with Typst's 39 native operators, instead of only compiling.
+  - [ ] Tag `v0.1.1` and submit the PR (`packages/preview/intl-math/0.1.1/`).
+  - [ ] Bump the import in `examkit` (`lib/notation.typ`) once it is published.
+    Until then CURSOS and Evaluxia keep running 0.1.0, which is fine: they call
+    `intl()` with no `extra`.
+  - [ ] Manual pass on `TESTING.md` by the author (pending since 0.1.0).

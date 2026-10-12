@@ -12,7 +12,7 @@
 //  word, decided by `text.lang`. Adopting the package does not force anyone to
 //  rewrite content.
 //
-//      #import "@preview/intl-math:0.1.0": intl
+//      #import "@preview/intl-math:0.1.1": intl
 //      #let m = intl()
 //      #set text(lang: "es")
 //      $#m.sin (x)$    →  sen(x)
@@ -44,9 +44,10 @@
 
 // Operators whose condition goes UNDERNEATH rather than beside: `lim_(x->0)`
 // puts the condition below the word, while `log_a` keeps it as a subscript.
-// This is the same list Typst uses for its native operators, verified by
-// compiling them: the rest (log, sin, arg, dim…) does NOT take limits.
-#let _limits = ("lim", "liminf", "limsup", "max", "min", "sup", "inf", "det", "gcd", "Pr")
+// This is the same list Typst uses for its native operators, and
+// `tests/fallback.typ` checks it by measuring each one against the native: the
+// rest (log, sin, arg, dim…) does NOT take limits.
+#let _limits = ("lim", "liminf", "limsup", "max", "min", "sup", "inf", "det", "gcd", "lcm", "Pr")
 
 // The `context` goes INSIDE the `math.op`, and this is NOT a matter of style.
 //
@@ -81,13 +82,20 @@
 ///
 /// - extra (dictionary): ADDITIONAL languages, `(code: (key: "word"))`. Lets you
 ///   use a language the package does not ship yet **without forking it**; if you
-///   also want to contribute it, it is one file in `lang/`.
+///   also want to contribute it, it is one file in `lang/`. For a language that
+///   does ship, only the keys you list are replaced.
 ///
 /// Returns a dictionary with one symbol per key (see `lang/en.typ` for the full
 /// list). Use it with `#`, because in math mode a bare identifier would be read
 /// as a product of variables: `$#m.sin (x)$`.
 #let intl(extra: (:)) = {
-  let tables = BUILTIN + extra
+  // Merged language by language, NOT `BUILTIN + extra`: that would replace a
+  // shipped table wholesale, and overriding two Spanish words would silently
+  // turn every other one back into English.
+  let tables = BUILTIN
+  for (lang, words) in extra {
+    tables.insert(lang, tables.at(lang, default: (:)) + words)
+  }
   let out = (:)
   // The keys come from the English table, which is the reference one: adding a
   // new symbol means adding it there (and to `_shape` if it is not an operator).

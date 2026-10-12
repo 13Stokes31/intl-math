@@ -13,7 +13,7 @@ writing `sin(x)`, the name Typst documents; what decides the output is `text.lan
 Adopting the package **does not force you to rewrite your content**.
 
 ```typst
-#import "@preview/intl-math:0.1.0": intl
+#import "@preview/intl-math:0.1.1": intl
 #let m = intl()
 
 #set text(lang: "es")
@@ -157,8 +157,10 @@ The gap this fills is acknowledged in Typst itself:
 ## Tests
 
 ```bash
-just test      # installs the package and compiles tests/smoke.typ (3 languages)
-               # plus tests/fallback.typ (unknown language, incomplete table, override)
+just test      # compiles tests/smoke.typ (3 languages) plus tests/fallback.typ
+               # (unknown language, incomplete table, override, parity with
+               # Typst's native operators); it reads ../lib.typ, installs nothing
+just install   # copies the package into the local cache as @local/intl-math
 ```
 
 ## License

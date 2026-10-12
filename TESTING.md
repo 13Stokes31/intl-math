@@ -1,8 +1,9 @@
 # TESTING — intl-math
 
-Manual verification checklist. Automated coverage is `tests/smoke.typ` and
-`tests/fallback.typ` (both compile-only, plus one `assert` on the shipped language
-list); this file is for the things a human should eyeball.
+Manual verification checklist. Automated coverage is `tests/smoke.typ`
+(compile-only) and `tests/fallback.typ` (asserts on the fallback cascade, the
+overrides and parity with Typst's native operators); this file is for the things
+a human should eyeball.
 
 Render both with:
 
@@ -38,9 +39,19 @@ And `tests/fallback.pdf`:
   fall back to English.
 - [ ] **Override of a shipped language** — `intl(extra: (es: (tan: "tan", Pr: "Pr")))`
   prints `tan` and `Pr` instead of `tg` and `P`, and leaves the rest of Spanish
-  untouched.
+  untouched: the same line shows `sen`, `lím` and `mcd`. (Fixed in 0.1.1.)
+- [ ] **Override of English** — `P(A)` instead of `Pr(A)`, and `lim inf` and `MVT`
+  still print as words, not as bare keys. (Fixed in 0.1.1.)
+
+New in 0.1.1, in `tests/smoke.pdf`:
+
+- [ ] **`lim inf` / `lím inf`** — the gap between the two words is a thin space,
+  narrower than a normal one.
+- [ ] **`lcm` / `mcm` with a subscript in block math** — the subscript goes
+  underneath, as with `gcd`.
 
 ## Before publishing
 
-- [ ] Compare a real CURSOS page built with `@local/intl-math` before and after
-  any change to `lib.typ` — this package is load-bearing there.
+- [ ] Compare a real CURSOS page before and after any change to `lib.typ` — this
+  package is load-bearing there (through `examkit`, which imports it from
+  `@preview`).

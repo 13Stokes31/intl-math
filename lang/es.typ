@@ -25,8 +25,8 @@
 
   // --- Limits and extrema (these carry an accent) ---
   lim: "lím",
-  liminf: "lím inf",
-  limsup: "lím sup",
+  liminf: "lím\u{2009}inf",
+  limsup: "lím\u{2009}sup",
   max: "máx",
   min: "mín",
   inf: "ínf",

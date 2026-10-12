@@ -21,7 +21,8 @@
   sinc: "sinc",
 
   // --- Limits and extrema ---
-  lim: "lim", liminf: "lim inf", limsup: "lim sup",
+  // The gap in the two compound ones is a THIN space (U+2009), as in Typst's own.
+  lim: "lim", liminf: "lim\u{2009}inf", limsup: "lim\u{2009}sup",
   max: "max", min: "min", sup: "sup", inf: "inf",
 
   // --- Logarithms and exponential ---

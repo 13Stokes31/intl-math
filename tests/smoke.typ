@@ -1,7 +1,7 @@
 // Smoke test: every symbol side by side in both shipped languages, so the two
 // columns can be compared at a glance, plus the cases where the *shape* matters
 // (limits underneath, operator spacing with a subscript, piecewise word).
-#import "@local/intl-math:0.1.0": intl, languages
+#import "../lib.typ": intl, languages
 #let m = intl()
 
 #set page(width: 16cm, height: auto, margin: 1cm)
@@ -62,6 +62,9 @@ Each pair below is the *same source*, only `text.lang` differs.
 Limits go *underneath* the word in block math (this is where `limits: true`
 shows; inline, Typst puts them beside, which is the correct behaviour):
 #pair($ #(m.lim)_(x->0) f(x) = #(m.max)_(x in A) g(x) $)
+
+Compound words keep a thin gap, and `lcm` takes its limits underneath like `gcd`:
+#pair($ #(m.liminf)_(n->oo) a_n + #(m.limsup)_(n->oo) b_n + #(m.lcm)_(i <= n) a_i $)
 
 Operator spacing survives a subscript — nothing should be glued together:
 #pair($#(m.proj)_u (v) + #(m.log)_a m$)
